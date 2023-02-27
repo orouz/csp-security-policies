@@ -253,3 +253,16 @@ generate_rds_db_instance(encryption_enabled, auto_minor_version_upgrade_enabled)
 	"type": "cloud-database",
 	"subType": "aws-rds",
 }
+
+generate_kms_resource(symmetric_default_enabled) = {
+	"resource": {
+		"KeyMetadata": {
+			# Only relevent keys are included
+			"KeyId": "21c0ba99-3a6c-4f72-8ef8-8118d4804710",
+			"KeySpec": "SYMMETRIC_DEFAULT",
+		},
+		"KeyRotationEnabled": symmetric_default_enabled,
+	},
+	"type": "cloud-storage",
+	"subType": "aws-kms",
+}
