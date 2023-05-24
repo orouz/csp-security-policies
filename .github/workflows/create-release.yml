@@ -1,0 +1,38 @@
+name: Create a new CIS Policies Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-opa-bundle:
+    runs-on: ubuntu-latest
+    name: "Build OPA Bundle"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup OPA
+        uses: open-policy-agent/setup-opa@v2
+        with:
+          version: 0.48.0
+
+      - name: OPA build
+        run: |
+          opa build -b ./bundle -e ./bundle/compliance
+          # TODO: ensure opa built successfully
+
+  publish-release:
+    runs-on: ubuntu-latest
+    name: "Publish Release"
+    steps:
+      - name: tag
+        run: |
+          NEXT_VERSION_NUMBER=$(gh release list --limit 1 | awk '{ sub(/^v/, "", $1); $NF++; print }' FS=. OFS=.)
+          NEXT_VERSION=v${NEXT_VERSION_NUMBER}
+
+          # create new git tag, include OPA bundle in release assets
+          gh release create $NEXT_VERSION bundle.tar.gz \ 
+                     --generate-notes \
+                     --title $NEXT_VERSION

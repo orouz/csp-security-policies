@@ -1,0 +1,59 @@
+name: Update Cloudbeat Policiy Version
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  # print_release_tag:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+
+  #     - name: Print Release Tag
+  #       run: |
+  #         echo "The release tag is ${{ github.event.release.tag_name }}"
+  #         echo "Release Assets:"
+  #         echo "${{ join(github.event.release.assets.*.name, ', ') }}"
+
+  update-cloudbeat:
+    runs-on: ubuntu-latest
+    name: "Update Cloudbeat with latest policy version"
+    steps:
+      - name: Update Policy
+        run: |
+          LATEST_VERSION = $(gh release list --limit 1 | awk '{sub(/^v/, "", $1); print $1}')
+          VERSION_PATH=version/policy.go
+
+          git clone cloudbeat . // TODO: clone shallow
+
+          // update policy.go
+          # ./update_policy_version.sh $LATEST_VERSION
+
+          // update policy.go
+          sed -i '' "s/const policyVersion = \".*\"/const policyVersion = \"$LATEST_VERSION\"/" "$VERSION_PATH"
+
+          # commit changes 
+          git add .
+          git commit -m 'Bump version to $LATEST_VERSION'
+
+      - name: Create/Update Cloudbeat PR
+        run: |
+          PR_TITLE="Update policies to latest"
+          PR_NUMBER=$(gh pr list | grep $PR_TITLE | awk '{sub(/^#/, "", $1); print $1}')
+
+          if [ "$PR_NUMBER" ]; then
+            gh pr edit $PR_NUMBER \
+            --head HEAD \
+            --repo elastic/cloudbeat
+          else
+            gh pr create \
+            --title $PR_TITLE \
+            --body "Bump version to $LATEST_VERSION" \
+            --base main \
+            --head HEAD \
+            --repo elastic/cloudbeat
+          fi

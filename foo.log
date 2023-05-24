@@ -1,0 +1,8 @@
+/bundle/compliance/cis_aws/rules/cis_1_19/test.rego:
+data.compliance.cis_aws.rules.cis_1_19.test_violation: PASS (943.209µs)
+data.compliance.cis_aws.rules.cis_1_19.test_pass: PASS (680.875µs)
+data.compliance.cis_aws.rules.cis_1_19.test_not_evaluated: PASS (175.292µs)
+/bundle/compliance/cis_k8s/rules/cis_1_1_19/test.rego:
+data.compliance.cis_k8s.rules.cis_1_1_19.test_violation: PASS (1.803167ms)
+data.compliance.cis_k8s.rules.cis_1_1_19.test_pass: PASS (878.375µs)
+data.compliance.cis_k8s.rules.cis_1_1_19.test_not_evaluated: PASS (587.375µs)
