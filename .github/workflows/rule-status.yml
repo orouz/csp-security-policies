@@ -31,7 +31,7 @@ jobs:
       - name: Commit changes
         run: |
           git config --local user.name 'Elastic Machine'
-          git config --local user.email 'elasticmachine@users.noreply.github.com
+          git config --local user.email 'elasticmachine@users.noreply.github.com'
           git add README.md RULES.md
           git commit -m "Update rule status"
 
