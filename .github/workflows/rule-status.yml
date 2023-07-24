@@ -1,4 +1,4 @@
-name: Post Merge Workflow
+name: Update rules status
 
 on:
   push:
