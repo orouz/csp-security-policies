@@ -49,6 +49,4 @@ jobs:
             [1]: https://github.com/peter-evans/create-pull-request
           labels: |
             documentation
-          team-reviewers: |
-            csp-security-policies
           draft: false
