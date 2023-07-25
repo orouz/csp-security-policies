@@ -275,9 +275,9 @@
 
 ## GCP CIS Benchmark
 
-### 14/84 implemented rules (17%)
+### 15/84 implemented rules (18%)
 
-#### Automated rules: 13/73 (18%)
+#### Automated rules: 14/73 (19%)
 
 #### Manual rules: 1/11 (9%)
 
@@ -289,7 +289,7 @@
 | [1.12](bundle/compliance/cis_gcp/rules/cis_1_12) | Identity and Access Management | Ensure API Keys Only Exist for Active Services                                                                                    | :white_check_mark: | Automated |
 | [1.13](bundle/compliance/cis_gcp/rules/cis_1_13) | Identity and Access Management | Ensure API Keys Are Restricted To Use by Only Specified Hosts and Apps                                                            | :white_check_mark: |  Manual   |
 | [1.14](bundle/compliance/cis_gcp/rules/cis_1_14) | Identity and Access Management | Ensure API Keys Are Restricted to Only APIs That Application Needs Access                                                         | :white_check_mark: | Automated |
-|                       1.15                       | Identity and Access Management | Ensure API Keys Are Rotated Every 90 Days                                                                                         |        :x:         | Automated |
+| [1.15](bundle/compliance/cis_gcp/rules/cis_1_15) | Identity and Access Management | Ensure API Keys Are Rotated Every 90 Days                                                                                         | :white_check_mark: | Automated |
 |                       1.16                       | Identity and Access Management | Ensure Essential Contacts is Configured for Organization                                                                          |        :x:         | Automated |
 |                       1.17                       | Identity and Access Management | Ensure that Dataproc Cluster is encrypted using Customer-Managed Encryption Key                                                   |        :x:         | Automated |
 |                       1.18                       | Identity and Access Management | Ensure Secrets are Not Stored in Cloud Functions Environment Variables by Using Secret Manager                                    |        :x:         |  Manual   |
