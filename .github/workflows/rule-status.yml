@@ -12,7 +12,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Set up Python environment
         uses: actions/setup-python@v2
@@ -22,8 +24,8 @@ jobs:
       - name: Install Poetry
         run: pip install poetry
 
-      - name: Install dependencies
-        run: poetry install
+      # - name: Install dependencies
+      #   run: poetry install
 
       # modifies README.md and RULES.md
       - name: Update rule status
