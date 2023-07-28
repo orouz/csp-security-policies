@@ -1,0 +1,74 @@
+name: Create rules templates
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_and_open_pr:
+    name: Create rules templates and open PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Poetry
+        run: pip install poetry
+
+      - name: Install dependencies
+        run: poetry install
+
+      # possibly create rule templates
+      - name: Create rule templates
+        run: |
+          mkdir generated_templates
+          poetry run python dev/generate_rule_templates.py -o ./generated_templates
+
+      - name: Check for new rule templates
+        id: check_files
+        run: |
+          if [[ -n "$(git diff --name-only)" ]]; then
+              echo "Modified files found."
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+              echo "No modified files found."
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Commit and push changes
+        if: steps.check_files.outputs.has_changes == 'true'
+        run: |
+          git clone --depth=1 https://github.com/elastic/integrations ../integrations
+          cp -r ./generated_templates/* ../integrations/packages/cloud_security_posture/kibana/csp_rule_template/
+          cd integrations
+          git config --local user.name 'Elastic Machine'
+          git config --local user.email 'elasticmachine@users.noreply.github.com'
+          git checkout csp_update_rule_templates
+          git add packages/cloud_security_posture/kibana/csp_rule_template
+          git commit -m "Update rules templates"
+          git push origin HEAD
+
+      - name: Create or edit PR
+        if: steps.check_files.outputs.has_changes == 'true'
+        run: |
+          PR_TITLE="[Cloud Security] Update rule templates"
+          PR_NUMBER=$(gh pr list --repo elastic/integrations --label "Team:Cloud Security" | grep "$PR_TITLE" | awk '{print $1}')
+
+          PR_BODY="This PR is automatically opened when a PR with new rules is merged in elastic/csp-security-policies."
+          PR_HEAD="csp_update_rule_templates"
+          PR_BASE="main"
+
+          # Create a PR if not already open, otherwise the branch is already updated with new changes
+          if [ -z "$PR_NUMBER" ]; then
+          gh pr create \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY" \
+              --head "$PR_HEAD" \
+              --base "$PR_BASE"
+          fi
