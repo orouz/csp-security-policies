@@ -57,12 +57,14 @@ jobs:
       - name: Create or edit PR
         if: steps.check_files.outputs.has_changes == 'true'
         run: |
+          REPO="elastic/integrations"
           PR_TITLE="[Cloud Security] Update rule templates"
-          PR_NUMBER=$(gh pr list --repo elastic/integrations --label "Team:Cloud Security" | grep "$PR_TITLE" | awk '{print $1}')
+          PR_NUMBER=$(gh pr list --repo "$REPO" --label "$PR_LABEL" | grep "$PR_TITLE" | awk '{print $1}')
 
           PR_BODY="This PR is automatically opened when a PR with new rules is merged in elastic/csp-security-policies."
           PR_HEAD="csp_update_rule_templates"
           PR_BASE="main"
+          PR_LABEL="Team:Cloud Security"
 
           # Create a PR if not already open, otherwise the branch is already updated with new changes
           if [ -z "$PR_NUMBER" ]; then
