@@ -44,16 +44,23 @@ jobs:
       - name: Commit and push changes
         if: steps.check_files.outputs.has_changes == 'true'
         run: |
+
+          # get integrations repo and copy new templates
           git clone --depth=1 https://github.com/elastic/integrations ../integrations
           cp -r ./generated_templates/* ../integrations/packages/cloud_security_posture/kibana/csp_rule_template/
           cd integrations
+
+          # configure git user
           git config --local user.name 'Elastic Machine'
           git config --local user.email 'elasticmachine@users.noreply.github.com'
+
+          # always use the same branch name
           git checkout csp_update_rule_templates
           git add packages/cloud_security_posture/kibana/csp_rule_template
           git commit -m "Update rules templates"
           git push origin HEAD
 
+      # TODO: edit manifest.yml and changelog.yml
       - name: Create or edit PR
         if: steps.check_files.outputs.has_changes == 'true'
         run: |
