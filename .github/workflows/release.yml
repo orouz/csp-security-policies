@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: Release.txt
-          tag_name: $(basename ${{ github.base_ref }})
+          tag_name: "$(basename ${{ github.base_ref }})"
 
     # env:
     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
