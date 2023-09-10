@@ -43,7 +43,7 @@ jobs:
           title="v$tag" 
           gh release create "$tag" \
              --repo=${{github.repository}} \
-             --title="$title"
+             --title="$title" \
              --generate-notes \
              --target ${{github.base_ref}} \
              --latest=false
