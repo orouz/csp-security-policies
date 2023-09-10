@@ -43,11 +43,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: Release.txt
-    #   - name: Create a release
-    #     if: steps.build.outcome == 'success'
+
     # env:
     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #       tag: ${{ github.base_ref }}
