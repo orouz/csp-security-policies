@@ -37,7 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v${{ github.run_number }} \
+          gh release create v${{ github.run_number }} \ 
+            bundle.tar.gz#Bundle \
             --generate-notes \
             --target ${{github.base_ref}}
-            bundle.tar.gz#Bundle
