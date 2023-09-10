@@ -34,6 +34,10 @@ jobs:
         id: build
         run: opa build -b ./bundle -e ./bundle/compliance
 
+      - name: Get Short Name of Base Ref
+        id: get_base_ref_short_name
+        run: echo "BASE_REF_SHORT_NAME=$(basename $GITHUB_BASE_REF)" >> $GITHUB_ENV
+
       - name: Create a release
         if: steps.build.outcome == 'success'
         run: echo ${{ github.sha }} > Release.txt
@@ -45,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: Release.txt
-          tag_name: "$(basename ${{ github.base_ref }})"
+          tag_name: "8.10"
 
     # env:
     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
