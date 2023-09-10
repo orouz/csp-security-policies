@@ -38,11 +38,12 @@ jobs:
         if: steps.build.outcome == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.base_ref }}
         run: |
-          tag=$(basename "$tag")
+          tag=$(date +'%Y%m%d%H%M%S')
+          title="v$tag" 
           gh release create "$tag" \
-             --repo="$GITHUB_REPOSITORY" \
-             --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
-             --generate-notes
-             --target $tag
+             --repo=${{github.repository}} \
+             --title="$title"
+             --generate-notes \
+             --target ${{github.base_ref}} \
+             --latest=false
