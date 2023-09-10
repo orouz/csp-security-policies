@@ -34,10 +34,6 @@ jobs:
         id: build
         run: opa build -b ./bundle -e ./bundle/compliance
 
-      - name: Get Short Name of Base Ref
-        id: get_base_ref_short_name
-        run: echo "BASE_REF_SHORT_NAME=$(basename $GITHUB_BASE_REF)" >> $GITHUB_ENV
-
       - name: Create a release
         if: steps.build.outcome == 'success'
         uses: softprops/action-gh-release@v1
@@ -47,6 +43,8 @@ jobs:
           files: bundle.tar.gz
           tag_name: "8.10.0"
           target_commitish: ${{ github.base_ref }}
+          generate_release_notes: true
+          prerelease: ${{ github.ref == 'refs/heads/main' }}
 
     # env:
     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
