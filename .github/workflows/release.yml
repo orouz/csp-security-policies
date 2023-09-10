@@ -31,9 +31,11 @@ jobs:
           version: 0.53.1
 
       - name: build OPA bundle
+        id: build
         run: opa build -b ./bundle -e ./bundle/compliance
 
       - name: Create a release
+        if: steps.build.outcome == 'success'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.base_ref }}
