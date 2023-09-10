@@ -42,11 +42,11 @@ jobs:
           tag=$(date +'%Y%m%d%H%M%S')
           title="v$tag" 
           is_latest=${{ github.base_ref == 'refs/heads/main' }}
-          echo "ref: ${{github.ref}}"
+          echo "ref: ${{github.base_ref}}"
           gh release create "$tag" \
              --repo=${{github.repository}} \
              --title="$title" \
              --generate-notes \
              --notes-start-tag ${{github.base_ref}} \
-             --target ${{github.base_ref}} \
+             --target ${{github.ref}} \
              --latest="$is_latest"
