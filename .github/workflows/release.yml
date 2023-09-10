@@ -40,5 +40,5 @@ jobs:
           gh release create v${{ github.run_number }} \
             --generate-notes \
             --target ${{github.base_ref}}
-            --notes-start-tag ${{github.base_ref}}
+            # --notes-start-tag ${{github.base_ref}}
             ./bundle.tar.gz#Bundle
