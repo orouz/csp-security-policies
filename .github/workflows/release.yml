@@ -40,16 +40,13 @@ jobs:
 
       - name: Create a release
         if: steps.build.outcome == 'success'
-        run: echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      - name: Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: bundle.tar.gz
           tag_name: "8.10.0"
+          target_commitish: ${{ github.base_ref }}
 
     # env:
     #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
