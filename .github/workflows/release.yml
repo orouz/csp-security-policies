@@ -36,8 +36,14 @@ jobs:
       - name: Create a release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.base_ref }}
         run: |
-          gh release create v${{ github.run_number }} \ 
-            LICENSE.txt \
-            --generate-notes \
-            --target ${{github.base_ref}}
+          gh release create "$tag" \
+               --repo="$GITHUB_REPOSITORY" \
+               --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+               --generate-notes
+               --target $tag
+        #   gh release create v${{ github.run_number }} \
+        #     LICENSE.txt \
+        #     --generate-notes \
+        #     --target ${{github.base_ref}}
