@@ -24,15 +24,6 @@ jobs:
         id: build
         run: opa build -b ./bundle -e ./bundle/compliance
 
-      - name: Check Branch Name
-        run: |
-          if [[ ${{ github.ref }} == "refs/heads/main" ]]; then
-            echo "The workflow was triggered on the 'main' branch."
-          elif [[ ${{ github.ref }} =~ ^refs/heads/[0-9]+\.[0-9]+$ ]]; then
-            echo "The workflow was triggered on a branch like '8.10' or similar."
-          else
-            echo "The workflow was triggered on a branch with an unknown name."
-          fi
       - name: Publish
         if: steps.build.outcome == 'success'
         env:
@@ -40,11 +31,12 @@ jobs:
         run: |
           tag=$(date +'%Y%m%d%H%M%S')
           title="v$tag" 
-          is_latest=${{ github.base_ref == 'refs/heads/main' }}
+          is_latest=${{ github.ref == 'refs/heads/main' }}
 
           gh release create "$tag" \
              --repo=${{github.repository}} \
              --title="$title" \
              --generate-notes \
+             --notes-start-tag ${{github.ref}} \
              --target ${{github.sha}} \
              --latest="$is_latest"
