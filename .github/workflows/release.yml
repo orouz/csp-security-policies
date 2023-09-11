@@ -6,11 +6,6 @@ on:
       - main
       - "[0-9]+.[0-9]+"
 
-env:
-  CONTAINER_SUFFIX: ${{ github.run_id }}
-  CI_ELASTIC_AGENT_DOCKER_TAG: "8.7.0-SNAPSHOT"
-  CI_ELASTIC_AGENT_DOCKER_IMAGE: "704479110758.dkr.ecr.eu-west-2.amazonaws.com/elastic-agent"
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -46,6 +41,6 @@ jobs:
              --repo=${{github.repository}} \
              --title="$title" \
              --generate-notes \
-             --notes-start-tag ${{github.base_ref}} \
-             --target ${{github.base_ref}} \
+             --notes-start-tag ${{github.ref}} \
+             --target ${{github.ref}} \
              --latest="$is_latest"
