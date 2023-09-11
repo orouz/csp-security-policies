@@ -1,0 +1,42 @@
+name: Cloudbeat-CI
+
+on:
+  push:
+    branches:
+      - main
+      - "[0-9]+.[0-9]+"
+
+jobs:
+  Build:
+    name: Build
+    runs-on: ubuntu-20.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Setup OPA
+        uses: open-policy-agent/setup-opa@v2
+        with:
+          version: 0.53.1
+
+      - name: Build
+        id: build
+        run: opa build -b ./bundle -e ./bundle/compliance
+
+      - name: Publish
+        if: steps.build.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag=$(date +'%Y%m%d%H%M%S')
+          title="v$tag" 
+          is_latest=${{ github.base_ref == 'refs/heads/main' }}
+
+          gh release create "$tag" \
+             --repo=${{github.repository}} \
+             --title="$title" \
+             --generate-notes \
+             --notes-start-tag ${{github.ref}} \
+             --target ${{github.sha}} \
+             --latest="$is_latest"
