@@ -46,6 +46,6 @@ jobs:
              --repo=${{github.repository}} \
              --title="$title" \
              --generate-notes \
-             --notes-start-tag ${{github.ref}} \
-             --target ${{github.ref}} \
+             --notes-start-tag ${{github.base_ref}} \
+             --target ${{github.base_ref}} \
              --latest="$is_latest"
