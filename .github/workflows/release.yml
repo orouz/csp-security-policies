@@ -37,4 +37,5 @@ jobs:
              --repo=${{github.repository}} \
              --title="$title" \
              --generate-notes \
+             --target ${{github.sha}} \
              --latest="$is_latest"
