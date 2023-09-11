@@ -24,6 +24,15 @@ jobs:
         id: build
         run: opa build -b ./bundle -e ./bundle/compliance
 
+      - name: Check Branch Name
+        run: |
+          if [[ ${{ github.ref }} == "refs/heads/main" ]]; then
+            echo "The workflow was triggered on the 'main' branch."
+          elif [[ ${{ github.ref }} =~ ^refs/heads/[0-9]+\.[0-9]+$ ]]; then
+            echo "The workflow was triggered on a branch like '8.10' or similar."
+          else
+            echo "The workflow was triggered on a branch with an unknown name."
+          fi
       - name: Publish
         if: steps.build.outcome == 'success'
         env:
